@@ -1,0 +1,96 @@
+extends ../../layout/default.pug
+include ../../Mixin/filter-status.pug
+include ../../Mixin/search-item.pug
+include ../../Mixin/pagination.pug
+include ../../Mixin/form-change-multi.pug
+
+block main
+ h1 Trang Quản Lý Sản Phẩm Đã Xóa
+ .card.mb-3
+    .card-header Bộ lọc và Tìm kiếm
+    .card-body
+      .row
+        .col-6
+          +filter-status(filterStatus)
+        .col-6
+          +search-item("Tìm Kiếm")
+    .card-header Danh Sách Sản Phẩm
+     .card-body
+        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+        table(
+          class="table table-hover table-sm"
+          checkbox-multi
+            )
+            thead
+                tr
+                    th
+                        input(type="checkbox" name="checkall")
+                    th STT
+                    th Hình ảnh
+                    th Tiêu đề
+                    th Giá
+                    th Trạng thái
+                    th Hành động
+            tbody
+                each item,index in products
+                    tr 
+                        td
+                            input(
+                                type="checkbox"
+                                name="id"
+                                value=item.id
+                            )
+                        td #{objectPagination.limitItem*objectPagination.currentPage+index-(objectPagination.limitItem-1)}
+                        td
+                            img(
+                                src=item.thumbnail
+                                alt=item.title
+                                width="100px"
+                                height="auto"
+                            )
+                        td #{item.title}
+                        td #{item.price}$
+                        td
+                            if(item.status == "active")
+                                a(
+                                href="javascript:;"
+                                button-change-status = item.status
+                                data-id = item.id
+                                class="badge badge-success"
+                                ) Hoạt động
+                            else
+                                a(
+                                href="javascript:;"  
+                                button-change-status = item.status
+                                 data-id = item.id
+                                class="badge badge-danger"
+                                ) Dừng hoạt động 
+                        td
+                            button(
+                                class="btn btn-success btn-sm"
+                                data-id =item.id
+                                button-restore
+                                
+                                ) Khôi Phục
+                            button(
+                                class="btn btn-danger btn-sm ml-1"
+                                data-id =item.id
+                                button-delete-forever
+                                ) Xóa Vv
+ +pagination(objectPagination,3)
+ form(
+    method="POST"
+    id = "form-change-status"
+    data-path=`${prefixAdmin}/products/change-status`
+    )
+ form(
+    method="POST"
+    id = "form-restore-status"
+    data-path=`${prefixAdmin}/trash/restore`
+    ) 
+ form(
+    method="POST"
+    id = "form-delete-forever-status"
+    data-path=`${prefixAdmin}/trash/delete`
+    )
+ script(src="/Admin/Js/products.js") 

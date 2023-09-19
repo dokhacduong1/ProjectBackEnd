@@ -1,0 +1,11 @@
+mixin image-preview-single(src="")
+    input(
+        type ="file"
+        class="form-control-file"
+        id="thumbnail"
+        name="thumbnail"
+        accept="image/*"
+        upload-image-input
+      )
+    div(class="box-image-preview")
+      img(class="image-preview" src=src)

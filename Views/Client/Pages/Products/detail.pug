@@ -1,0 +1,30 @@
+extends ../../Layout/default.pug
+
+block main
+  .container.my-3
+    .row
+      .col-12
+        if (record.title)
+          h1(class="mb-4") #{record.title}
+
+        if (record.price)
+          div(class="mb-4") Giá: <b>#{record.price}$</b>
+
+        if (record.discountPercentage)
+          div(class="mb-4") Giảm giá: <b>#{record.discountPercentage}%</b>
+
+        if (record.stock)
+          div(class="mb-4") Còn lại: <b>#{record.stock}</b>
+
+        if (record.thumbnail)
+          div(class="mb-4")
+            img(
+              src=record.thumbnail
+              style="width: 100px"
+            )
+
+        if (record.position)
+          div(class="mb-4") Vị trí: <b>#{record.position}</b>
+
+        if (record.description)
+          div(class="mb-4") #{record.description}
