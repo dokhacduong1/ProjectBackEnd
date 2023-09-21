@@ -55,5 +55,6 @@ const port = process.env.PORT
 
 //Cho expres lắng nghe cổng 3000 và chạy cổng
 app.listen(port, () => {
+  console.log("ok",`${__dirname}/Public`)
   console.log(`Example app listening on port ${port}`)
 })
