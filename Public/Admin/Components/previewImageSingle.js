@@ -1,4 +1,4 @@
-export function PreviewImageSingle() {
+function PreviewImageSingle() {
     const uploadImageInput = document.querySelector("[upload-image-input]");
     if (uploadImageInput) {
         uploadImageInput.addEventListener("change", (e) => {
@@ -33,3 +33,4 @@ export function PreviewImageSingle() {
         })
     }
 }
+PreviewImageSingle()

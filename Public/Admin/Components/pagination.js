@@ -1,5 +1,5 @@
 //Phân Trang
-export function Pagination() {
+function Pagination() {
     let url = new URL(window.location.href);
     //Đoạn này thao tác cho người dùng nhấn next hoặc chuyển trang gì đó
     const buttonPagination = document.querySelectorAll("[button-pagination]");
@@ -22,8 +22,8 @@ export function Pagination() {
             if (event.key === "Enter" || event.keyCode === 13) {
                 const totalPage = parseInt(input.getAttribute("total-page"))
                 const page = parseInt(input.value)
-                if (page && totalPage>=page && page>0) { 
-                    url.searchParams.set("page", page);           
+                if (page && totalPage >= page && page > 0) {
+                    url.searchParams.set("page", page);
                 } else {
                     url.searchParams.delete("page");
                 }
@@ -33,3 +33,4 @@ export function Pagination() {
     })
 }
 //End
+Pagination()

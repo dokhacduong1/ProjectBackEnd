@@ -1,4 +1,4 @@
-export function CheckBox() {
+function CheckBox() {
     const checkBoxMulti = document.querySelector("[checkbox-multi]");
     if (checkBoxMulti) {
         const inputCheckAll = checkBoxMulti.querySelector("input[name='checkall']");
@@ -19,3 +19,4 @@ export function CheckBox() {
         })
     }
 }
+CheckBox()

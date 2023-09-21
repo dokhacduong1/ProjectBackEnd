@@ -1,5 +1,5 @@
 //Bộ Lọc
-export function FilterItem() {
+function FilterItem() {
     const buttonStatus = document.querySelectorAll("[button-status]");
     if (buttonStatus.length > 0) {
         let url = new URL(window.location.href);
@@ -17,3 +17,4 @@ export function FilterItem() {
     }
 }
 //End
+FilterItem()

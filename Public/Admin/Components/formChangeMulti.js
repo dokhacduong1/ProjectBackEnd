@@ -1,4 +1,4 @@
-export function FormChangeMulti() {
+function FormChangeMulti() {
     const formChangeMulti = document.querySelector("[form-change-multi]");
     if (formChangeMulti) {
         const checkBoxMulti = document.querySelector("[checkbox-multi]");
@@ -31,3 +31,4 @@ export function FormChangeMulti() {
         })
     }
 }
+FormChangeMulti()
