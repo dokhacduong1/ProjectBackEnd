@@ -29,8 +29,7 @@ app.use(cookieParser('FJFDSIOSDFIPDSF'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 
-//Tạo cổng cho có là 3000
-const port = 3000
+
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
@@ -51,6 +50,8 @@ require("dotenv").config();
 //Kết nối vào database
 database.connect();
 
+//Tạo cổng cho có là 3000
+const port = process.env.PORT
 
 //Cho expres lắng nghe cổng 3000 và chạy cổng
 app.listen(port, () => {
