@@ -5,68 +5,83 @@ const paginationHelpers = require("../../Helpers/pagination")
 const systemConfig = require("../../Config/systems")
 //[GET] /admin/products
 module.exports.index = async function (req, res) {
-    //Khai báo biến find
-    const find = {
-        deleted: false
+    try {
+        //Khai báo biến find
+        const find = {
+            deleted: false
+        }
+
+
+
+        //Đoạn này check query URL nếu không có trả về rỗng
+        const checkActive = req.query.status || "";
+        const checKeyword = req.query.keyword || "";
+        const checkPage = req.query.page || "";
+        const sortKey = req.query.sortKey || "position";
+        const sortValue = req.query.sortValue || "desc";
+
+
+
+        //Đoạn này về bộc lọc
+        //Hàm này để lấy hàm filterStatus từ bên Helpers qua tác dụng để lấy trạng thái bộ lọc
+        const filterStatus = filterStatusHelpers(checkActive);
+        //Nếu không phải undefind hoặc rỗng thì thêm thuộc tính status
+        if (checkActive) {
+            find.status = checkActive;
+        }
+
+
+
+        //Đoạn này về thanh search
+        //Hàm này để lấy hàm searchItem từ bên Helpers qua tác dụng để lấy regex của keyword
+        const searchItem = searchItemHelpers(checKeyword)
+        //Nếu không phải undefind hoặc rỗng thì thêm thuộc tính title
+        if (checKeyword) {
+            find.title = searchItem;
+        }
+
+
+
+        //Đoạn này về phân trang
+        //Đếm xem bảng products có bao nhiêu sản phẩm
+        const countProducts = await Products.count(find)
+        //Hàm này để lấy hàm pagination từ bên Helpers qua tác dụng để lấy objectPagination
+        //Chúng ta phải truyền 3 tham số
+        //countProducts: Số lượng sản phẩm của bảng
+        //checkPage: Page hiện tại của sản phẩm
+        //limitPage: Số lượng sản phẩm cần hiển thị
+        const objectPagination = paginationHelpers(countProducts, checkPage, 4)
+
+
+        //Đoạn này làm về sort
+        //Muốn cho một biến có giá trị thành một thuộc tính ta truyền [sortKey] vào
+        const sort = {
+            [sortKey]: sortValue
+        }
+        const sortSelect = `${sortKey}-${sortValue}`;
+
+
+        //Bắt đầu tìm kiếm trong bảng sản phẩm
+        const products = await Products.find(find)
+            .limit(objectPagination.limitItem)
+            .skip(objectPagination.skip)
+            .sort(sort);
+
+
+
+        //Render ra giao diện
+        res.render("Admin/Pages/Products", {
+            title: "Trang Sản Phẩm",
+            products: products,
+            filterStatus: filterStatus,
+            keyword: checKeyword,
+            objectPagination: objectPagination,
+            sortSelect: sortSelect
+        });
+    } catch (error) {
+        req.flash("error", "Sai Đường Dẫn");
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
-
-
-
-    //Đoạn này check query URL nếu không có trả về rỗng
-    const checkActive = req.query.status || "";
-    const checKeyword = req.query.keyword || "";
-    const checkPage = req.query.page || "";
-
-
-
-    //Đoạn này về bộc lọc
-    //Hàm này để lấy hàm filterStatus từ bên Helpers qua tác dụng để lấy trạng thái bộ lọc
-    const filterStatus = filterStatusHelpers(checkActive);
-    //Nếu không phải undefind hoặc rỗng thì thêm thuộc tính status
-    if (checkActive) {
-        find.status = checkActive
-    }
-
-
-
-    //Đoạn này về thanh search
-    //Hàm này để lấy hàm searchItem từ bên Helpers qua tác dụng để lấy regex của keyword
-    const searchItem = searchItemHelpers(checKeyword)
-    //Nếu không phải undefind hoặc rỗng thì thêm thuộc tính title
-    if (checKeyword) {
-        find.title = searchItem
-    }
-
-
-
-    //Đoạn này về phân trang
-    //Đếm xem bảng products có bao nhiêu sản phẩm
-    const countProducts = await Products.count(find)
-    //Hàm này để lấy hàm pagination từ bên Helpers qua tác dụng để lấy objectPagination
-    //Chúng ta phải truyền 3 tham số
-    //countProducts: Số lượng sản phẩm của bảng
-    //checkPage: Page hiện tại của sản phẩm
-    //limitPage: Số lượng sản phẩm cần hiển thị
-    const objectPagination = paginationHelpers(countProducts, checkPage, 4)
-
-
-
-    //Bắt đầu tìm kiếm trong bảng sản phẩm
-    const products = await Products.find(find)
-        .limit(objectPagination.limitItem)
-        .skip(objectPagination.skip)
-        .sort({ position: "desc" })
-
-
-
-    //Render ra giao diện
-    res.render("Admin/Pages/Products", {
-        title: "Trang Sản Phẩm",
-        products: products,
-        filterStatus: filterStatus,
-        keyword: checKeyword,
-        objectPagination: objectPagination,
-    });
 
 }
 
@@ -76,7 +91,7 @@ module.exports.changeStatus = async function (req, res) {
     const status = req.params.status;
     await Products.updateOne({ _id: id }, { status: status });
     req.flash('success', 'Cập Nhật Trạng Thái Thành Công');
-    res.redirect('back')
+    res.redirect('back');
 }
 
 //[PATCH] /admin/products/change-multi
@@ -168,28 +183,24 @@ module.exports.getEdit = async function (req, res) {
 //[PATCH] /admin/products/edit/:id
 module.exports.patchEdit = async function (req, res) {
     const id = req.params.id
-    req.body.description = req.body.description 
-    req.body.price = parseInt(req.body.price) 
-    req.body.discountPercentage = parseInt(req.body.discountPercentage) 
+    req.body.description = req.body.description
+    req.body.price = parseInt(req.body.price)
+    req.body.discountPercentage = parseInt(req.body.discountPercentage)
     req.body.position = parseInt(req.body.position)
     req.body.stock = parseInt(req.body.stock)
 
-    if(req.file){
-        req.body.thumbnail = `/Uploads/${req.file.filename}`
-    }
-    
     try {
-        await Products.updateOne({_id:id},req.body)
+        await Products.updateOne({ _id: id }, req.body)
         req.flash("success", "Cập Nhật Thành Công");
         res.redirect(`${systemConfig.prefixAdmin}/products`)
-       
+
     } catch (error) {
         req.flash("error", "Cập Nhật Thất Bại");
         res.redirect(`${systemConfig.prefixAdmin}/products`)
     }
 
 
-   
+
 }
 
 //[GET] /admin/products/detail/:id

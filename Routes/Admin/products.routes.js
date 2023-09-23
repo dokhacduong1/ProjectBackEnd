@@ -30,6 +30,7 @@ router.get('/edit/:id', controller.getEdit);
 
 router.patch('/edit/:id',
     upload.single('thumbnail'),
+    uploadCloud.uplload,
     validate.createValidateError,
     controller.patchEdit,
 
