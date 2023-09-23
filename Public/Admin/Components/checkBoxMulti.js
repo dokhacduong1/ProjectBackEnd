@@ -1,4 +1,4 @@
-function CheckBox() {
+function CheckBoxMulti() {
     const checkBoxMulti = document.querySelector("[checkbox-multi]");
     if (checkBoxMulti) {
         const inputCheckAll = checkBoxMulti.querySelector("input[name='checkall']");
@@ -19,4 +19,4 @@ function CheckBox() {
         })
     }
 }
-CheckBox()
+CheckBoxMulti()
