@@ -4,7 +4,10 @@ const validate = require("../../Validates/Admin/product.validate")
 const router = express.Router();
 const multer = require('multer')
 const storageMulter = require("../../Helpers/storageMulter")
-const upload = multer({ storage: storageMulter() })
+const uploadCloud = require("../../Middlewares/Admin/uploadCloud.middleware")
+
+// const upload = multer({ storage: storageMulter() })
+const upload = multer()
 
 router.get('/', controller.index);
 
@@ -19,6 +22,7 @@ router.get('/create', controller.getCreate);
 //Nếu muốn upload ảnh phải cho thêm upload.single thì nó mới gửi dữ liệu lên
 router.post('/create',
     upload.single('thumbnail'),
+    uploadCloud.uplload,
     validate.createValidateError,
     controller.postCreate
 );

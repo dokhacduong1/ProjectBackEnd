@@ -138,7 +138,6 @@ module.exports.postCreate = async function (req, res) {
     req.body.description = req.body.description || "Bài Này Chưa Có Tiêu Đề"
     req.body.price = parseInt(req.body.price) || 0
     req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0
-    req.body.thumbnail = req.file ? `/Uploads/${req.file.filename}` : "https://www.duongshop.xyz/logo1.png"
     req.body.position = parseInt(req.body.position) || cout + 1
     req.body.stock = parseInt(req.body.stock) || 0
 
