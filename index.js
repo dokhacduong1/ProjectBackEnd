@@ -5,6 +5,7 @@ var bodyParser = require('body-parser')
 var flash = require('express-flash')
 var cookieParser = require('cookie-parser')
 var session = require('express-session')
+var path = require('path');
 
 
 
@@ -28,6 +29,8 @@ app.use(express.static(`${__dirname}/Public`));
 app.use(cookieParser('FJFDSIOSDFIPDSF'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
+//Cấu hình Tinymce bộ soạn thaỏ văn bản
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 
 

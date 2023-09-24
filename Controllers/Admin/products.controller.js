@@ -149,8 +149,8 @@ module.exports.getCreate = async function (req, res) {
 //[POST] /admin/products/create
 module.exports.postCreate = async function (req, res) {
     const cout = await Products.count({})
-
     req.body.description = req.body.description || "Bài Này Chưa Có Tiêu Đề"
+    req.body.content = req.body.content || ""
     req.body.price = parseInt(req.body.price) || 0
     req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0
     req.body.position = parseInt(req.body.position) || cout + 1
@@ -184,6 +184,7 @@ module.exports.getEdit = async function (req, res) {
 module.exports.patchEdit = async function (req, res) {
     const id = req.params.id
     req.body.description = req.body.description
+    req.body.content = req.body.content || ""
     req.body.price = parseInt(req.body.price)
     req.body.discountPercentage = parseInt(req.body.discountPercentage)
     req.body.position = parseInt(req.body.position)
