@@ -2,6 +2,7 @@ function PreviewImageSingle() {
     const uploadImageInput = document.querySelector("[upload-image-input]");
     if (uploadImageInput) {
         uploadImageInput.addEventListener("change", (e) => {
+          
             const divImg = document.querySelector(".box-image-preview")
             const boxImg = document.querySelector(".image-preview")
             //Check xem có nút x không thì xóa

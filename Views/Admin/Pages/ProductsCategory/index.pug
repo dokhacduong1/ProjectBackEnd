@@ -6,10 +6,9 @@ include ../../Mixin/form-change-multi.pug
 include ../../Mixin/alert.pug
 include ../../Mixin/sort.pug
 block main
-    
     +alert-error(3000)
     +alert-success(1000)
-    h1 Trang Sản Phẩm
+    h1 Danh Mục Sản Phẩm
     .card.mb-3
         .card-header Bộ lọc và Tìm kiếm
         .card-body
@@ -29,10 +28,10 @@ block main
             .card-body
                 .row
                     .col-8
-                        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                        +form-change-multi(`${prefixAdmin}/products-category/change-multi?_method=PATCH`)
                     .col-4
                         a(
-                        href=`${prefixAdmin}/products/create`
+                        href=`${prefixAdmin}/products-category/create`
                         class="btn btn-outline-success"
                         ) +Thêm Mới
                 table(
@@ -46,13 +45,12 @@ block main
                                 th STT
                                 th Hình ảnh
                                 th Tiêu đề
-                                th Giá
                                 th Vị Trí
                                 th Trạng thái
                                 th Hành động
                         tbody
-                            each item,index in products
-                                tr 
+                            each item,index in record
+                                tr
                                     td
                                         input(
                                             type="checkbox"
@@ -68,7 +66,6 @@ block main
                                             height="auto"
                                         )
                                     td #{item.title}
-                                    td #{item.price}$
                                     td
                                         input(
                                             type="number"
@@ -93,11 +90,11 @@ block main
                                             ) Dừng hoạt động 
                                     td
                                         a(
-                                            href =`${prefixAdmin}/products/detail/${item.id}`
+                                            href =`${prefixAdmin}/products-category/detail/${item.id}`
                                             class="btn btn-secondary btn-sm"
                                         ) Chi Tiết
                                         a(
-                                            href =`${prefixAdmin}/products/edit/${item.id}`
+                                            href =`${prefixAdmin}/products-category/edit/${item.id}`
                                             class="btn btn-warning btn-sm"
                                         ) Sửa
                                         button(
@@ -109,11 +106,11 @@ block main
     form(
         method="POST"
         id = "form-change-status"
-        data-path=`${prefixAdmin}/products/change-status`
+        data-path=`${prefixAdmin}/products-category/change-status`
         )
     form(
         method="POST"
         id = "form-delete-status"
-        data-path=`${prefixAdmin}/products/delete`
+        data-path=`${prefixAdmin}/products-category/delete`
         ) 
     script(src="/Admin/Components/changeStatus.js") 

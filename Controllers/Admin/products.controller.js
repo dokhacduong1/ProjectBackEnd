@@ -3,6 +3,34 @@ const filterStatusHelpers = require("../../Helpers/filterStatus")
 const searchItemHelpers = require("../../Helpers/searchItem")
 const paginationHelpers = require("../../Helpers/pagination")
 const systemConfig = require("../../Config/systems")
+
+const sortOptions =[
+    {
+        value:"position-desc",
+        text: "Vị trí giảm dần"
+    },
+    {
+        value:"position-asc",
+        text: "Vị trí tăng dần"
+    },
+    {
+        value:"price-desc",
+        text: "Giá giảm dần"
+    },
+    {
+        value:"price-asc",
+        text: "Giá tăng dần"
+    },
+    {
+        value:"title-asc",
+        text: "Tiêu đề A - Z"
+    },
+    {
+        value:"title-desc",
+        text: "Tiêu đề Z - A"
+    },
+]
+
 //[GET] /admin/products
 module.exports.index = async function (req, res) {
     try {
@@ -59,6 +87,8 @@ module.exports.index = async function (req, res) {
             [sortKey]: sortValue
         }
         const sortSelect = `${sortKey}-${sortValue}`;
+        
+
 
 
         //Bắt đầu tìm kiếm trong bảng sản phẩm
@@ -76,7 +106,8 @@ module.exports.index = async function (req, res) {
             filterStatus: filterStatus,
             keyword: checKeyword,
             objectPagination: objectPagination,
-            sortSelect: sortSelect
+            sortSelect: sortSelect,
+            sortOptions:sortOptions
         });
     } catch (error) {
         req.flash("error", "Sai Đường Dẫn");
