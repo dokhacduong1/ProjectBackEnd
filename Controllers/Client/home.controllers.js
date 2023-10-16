@@ -1,15 +1,16 @@
 const Product = require("../../Models/product.model")
 const prodcutHelper = require("../../Helpers/product")
-const si = require('systeminformation');
+var ip = require('ip');
 //[GET] /
 module.exports.index = async function (req, res) {
+
     //Lấy ra sản phẩm nổi bật
     const productFeatured = await Product.find({
         deleted: false,
         featured: "1",
         status: "active"
     }).limit(4)
-    const test = await si.networkInterfaces()
+   console.log(ip.address())
  
     const newProductsFeatured = prodcutHelper.priceNewProducts(productFeatured)
 
@@ -26,5 +27,6 @@ module.exports.index = async function (req, res) {
     //     productsFeatured: newProductsFeatured,
     //     productsNew: newProductsNew
     // });
-    res.send(test)
+    res.send(ip.address())
+
 }
