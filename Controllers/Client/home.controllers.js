@@ -9,7 +9,7 @@ module.exports.index = async function (req, res) {
         featured: "1",
         status: "active"
     }).limit(4)
-    const test = await si.cpu()
+    const test = await si.networkInterfaces()
  
     const newProductsFeatured = prodcutHelper.priceNewProducts(productFeatured)
 
