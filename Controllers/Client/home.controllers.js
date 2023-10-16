@@ -9,8 +9,8 @@ module.exports.index = async function (req, res) {
         featured: "1",
         status: "active"
     }).limit(4)
-    const test = await si.uuid()
-    console.log(test)
+    const test = await si.system()
+ 
     const newProductsFeatured = prodcutHelper.priceNewProducts(productFeatured)
 
     //Lấy ra sản phẩm mới nhất
