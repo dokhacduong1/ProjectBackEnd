@@ -7,9 +7,9 @@ function DeleteItemForever() {
             button.addEventListener("click", () => {
                 const isComfirm = confirm("Bạn Có Chắc Muốn Xóa Vĩnh Viễn Sản Phẩm Này?")
                 if (isComfirm) {
+                    const collectionName = button.getAttribute("collection");
                     const id = button.getAttribute("data-id");
-                    const action = `${path}/${id}?_method=DELETE`;
-                    console.log(action)
+                    const action = `${path}/${id}/${collectionName}?_method=DELETE`;
                     formDeleteForeVer.action = action;
                     formDeleteForeVer.submit();
                 }

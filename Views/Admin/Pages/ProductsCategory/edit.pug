@@ -1,81 +1,84 @@
 extends ../../Layout/default.pug
 include ../../Mixin/image-preview-single.pug
 include ../../Mixin/alert.pug
+include ../../Mixin/select-tree.pug
 block main
-  +alert-error(3000)
-  h1(class="mb-4") Tạo Mới Sản Phẩm
-  form(
-    action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
-    id="form-edit-product"
-    method="POST"
-    enctype="multipart/form-data"
-  )
-    div(class="form-group")
-      label(for="title") Tiêu đề
-      input(
-        type="text"
-        class="form-control"
-        id="title"
-        name="title"
-        value =record.title
-      )
-    div(class="form-group")
-      label(for="parent_id") Danh mục cha
-      input(
-        type="text"
-        class="form-control"
-        id="parent_id"
-        name="parent_id"
-        value =record.parent_id
-      )
-    div(class="form-group")
-      label(for="desc") Mô tả
-      textarea(
-        tinymce
-        class="form-control textarea-mce"
-        id="desc"
-        name="description"
-        rows="5"
-      ) #{record.description}
-    div(
-      class="form-group"
-      upload-image
+  if(role.permissions.includes("products-category_edit"))
+    +alert-error(3000)
+    h1(class="mb-4") Tạo Mới Sản Phẩm
+    form(
+      action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
+      id="form-edit-product"
+      method="POST"
+      enctype="multipart/form-data"
     )
-      label(for="thumbnail") Ảnh
-      +image-preview-single(record.thumbnail)
-    div(class="form-group")
-      label(for="position") Vị trí
-      input(
-        type="number"
-        class="form-control"
-        id="position"
-        name="position"
-        placeholder="Tự động tăng"
-        min="1"
-        value =record.position
+      div(class="form-group")
+        label(for="title") Tiêu đề
+        input(
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          value =record.title
+        )
+      div(class="form-group")
+        label(for="parent_id") Danh mục cha
+        select(
+          name="parent_id"
+          id="parent_id"
+          class ="form-control"
+        )
+          option(value="") -- Chọn danh mục cha --
+          if(treeRecord)
+            +select-tree(treeRecord,1,record.parent_id)
+      div(class="form-group")
+        label(for="desc") Mô tả
+        textarea(
+          tinymce
+          class="form-control textarea-mce"
+          id="desc"
+          name="description"
+          rows="5"
+        ) #{record.description}
+      div(
+        class="form-group"
+        upload-image
       )
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusActive"
-        name="status"
-        value="active"
-        checked = record.status === "active"
-      )
-      label(for="statusActive" class="form-check-label") Hoạt động
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusInActive"
-        name="status"
-        value="inactive"
-        checked = record.status === "inactive"
-      )
-      label(for="statusInActive" class="form-check-label") Dừng hoạt động
-    div(class="form-group")
-      button(
-        type="submit"
-        class="btn btn-primary"
-      ) Sửa Danh Mục
+        label(for="thumbnail") Ảnh
+        +image-preview-single(record.thumbnail)
+      div(class="form-group")
+        label(for="position") Vị trí
+        input(
+          type="number"
+          class="form-control"
+          id="position"
+          name="position"
+          placeholder="Tự động tăng"
+          min="1"
+          value =record.position
+        )
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusActive"
+          name="status"
+          value="active"
+          checked = record.status === "active"
+        )
+        label(for="statusActive" class="form-check-label") Hoạt động
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusInActive"
+          name="status"
+          value="inactive"
+          checked = record.status === "inactive"
+        )
+        label(for="statusInActive" class="form-check-label") Dừng hoạt động
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Sửa Danh Mục

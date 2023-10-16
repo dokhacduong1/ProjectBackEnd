@@ -6,6 +6,7 @@ cloudinary.config(configCloud.configCloudinary);
 
 //Hàm này sử lý logic
 module.exports.uplload = async (req, res, next) => {
+
     if (req.file) {
         const streamUpload = (req) => {
             return new Promise((resolve, reject) => {
@@ -22,6 +23,7 @@ module.exports.uplload = async (req, res, next) => {
         };
         try {
             const result = await streamUpload(req);
+
             //req.file.fieldname nó lấy cái key là thumnail
             req.body[req.file.fieldname] = `${result.secure_url}`
         } catch (error) {

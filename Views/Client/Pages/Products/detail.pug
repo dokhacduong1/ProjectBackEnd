@@ -1,30 +1,58 @@
 extends ../../Layout/default.pug
+include ../../Mixin/box-head.pug
 
 block main
-  .container.my-3
-    .row
-      .col-12
-        if (record.title)
-          h1(class="mb-4") #{record.title}
+  .product-detail
+    .container.my-5
+      .row
+        .col-6
+          .inner-thumb
+            img(src=product.thumbnail, alt=product.title)
+        .col-6
+          if(product.featured == "1")
+            .inner-featured Nổi Bật
+          h1(class="inner-title") #{product.title}
 
-        if (record.price)
-          div(class="mb-4") Giá: <b>#{record.price}$</b>
+          if (product.category)
+            div(class="inner-category")
+              span Danh mục: 
+              a(href=`/products/${product.category.slug}`) #{product.category.title}
+          .box-price
+            .box-price-row
+              if (product.priceNew)
+                div(class="inner-price-new") #{product.priceNew} <u>đ</u>
+              if (product.price)
+                div(class="inner-price-old") #{product.price} <u>đ</u>
+            if (product.stock)
+              div(class="inner-stock") <p>Còn Hàng</p>
 
-        if (record.discountPercentage)
-          div(class="mb-4") Giảm giá: <b>#{record.discountPercentage}%</b>
 
-        if (record.stock)
-          div(class="mb-4") Còn lại: <b>#{record.stock}</b>
+          if (product.discountPercentage)
+            div(class="inner-percent") Giảm: #{product.discountPercentage}%
 
-        if (record.thumbnail)
-          div(class="mb-4")
-            img(
-              src=record.thumbnail
-              style="width: 100px"
+         
+          form(
+            action=`/cart/add/${product.id}`
+            method="POST"
+            class="inner-form"
+          )
+            input(
+              class="form-control mb-2"
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              max=product.stock
             )
+            button(
+              type="submit"
+              class="btn btn-success btn-block"
+            ) Thêm vào giỏ hàng
 
-        if (record.position)
-          div(class="mb-4") Vị trí: <b>#{record.position}</b>
+    hr
 
-        if (record.description)
-          div(class="mb-4") #{record.description}
+    .container.my-5
+      .row
+        .col-12
+          +box-head("Mô tả sản phẩm")
+          .inner-desc !{product.content}

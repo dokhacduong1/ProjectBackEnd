@@ -1,15 +1,35 @@
+include ../Mixin/sub-menu.pug
 header.header
   .container
     .row.align-items-center
       .col-3
         .inner-logo
-          a(href="/")
-            img(src="/Client/Images/logo1.png", alt="Logo")
+          a(href="/") GNOUD
 
-      .col-9
+      .col-5
+        form(
+              action="/search"
+              method="GET"
+              class = "search"
+            ) 
+          div(class="form-group d-flex mb-0")
+            input(
+                  type="text"
+                  placeholder="Nhập từ khóa..."
+                  class="form-control"
+                  name="keyword"
+                  value=keyword
+              )
+            button(
+                  type="submit"
+                  class="btn btn-primary"
+                ) Tìm
+      .col-4
         .inner-menu
           ul
             li
               a(href="/") Trang chủ
-            li
+            li(class="sub-menu")
+              -const pathProduct = "/products";
               a(href="/products") Sản phẩm
+              +sub-menu(layoutProductCategory,pathProduct)

@@ -7,8 +7,11 @@ function RestoreItem() {
             button.addEventListener("click", () => {
                 const isComfirm = confirm("Bạn Có Muốn Khôi Phục Sản Phẩm Này?")
                 if (isComfirm) {
+                    const collectionName = button.getAttribute("collection");
+                    
                     const id = button.getAttribute("data-id");
-                    const action = `${path}/${id}?_method=PATCH`;
+                    const action = `${path}/${id}/${collectionName}?_method=PATCH`;
+
                     formRestore.action = action;
                     formRestore.submit();
                 }

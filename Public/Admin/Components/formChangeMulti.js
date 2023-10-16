@@ -15,7 +15,7 @@ function FormChangeMulti() {
             const ids = Array.from(inputChecked).map(input => {
                 const id = input.value
                 //input.closest() lấy giá trị cha của input cụ thể là tr
-                const position = input.closest("tr").querySelector("input[name='position']").value;
+                const position = input.closest("tr").querySelector("input[name='position']")?.value || "";
                 //nếu type = change-position thì ta cộng thêm position đằng sau không thì thôi
                 const stringId = typeChange === "change-position" ? `${id}-${position}` : `${id}`
                 return stringId

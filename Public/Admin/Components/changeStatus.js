@@ -9,6 +9,7 @@ function ChangeStatus() {
                 const id = button.getAttribute("data-id")
                 const statusChange = status === "active" ? "inactive" : "active"
                 const action = `${path}/${statusChange}/${id}?_method=PATCH`
+                console.log(action)
                 formChangeStatus.action = action
                 formChangeStatus.submit()
             })

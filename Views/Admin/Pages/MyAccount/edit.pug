@@ -1,0 +1,59 @@
+extends ../../Layout/default.pug
+include ../../Mixin/alert.pug
+include ../../Mixin/image-preview-single.pug
+block main
+    h1(class="mb-4") Cập nhật thông tin cá nhân
+
+    +alert-success(5000)
+    +alert-error(5000)
+
+    form(
+        action=`${prefixAdmin}/my-account/edit?_method=PATCH`
+        method="POST"
+        enctype="multipart/form-data"
+    )
+        div(class="form-group")
+            label(for="title") Họ tên *
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                required
+                value=user.title
+            )
+        div(class="form-group")
+            label(for="email") Email *
+            input(
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                required
+                value=user.email
+            )
+        div(class="form-group")
+            label(for="password") Mật khẩu
+            input(
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+            )
+        div(class="form-group")
+            label(for="phone") Số điện thoại
+            input(
+                type="text"
+                class="form-control"
+                id="phone"
+                name="phone"
+                value=user.phone
+            )
+        div(class="form-group")
+            label(for="avatar") Ảnh
+            +image-preview-single(user.avatar,"avatar")
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Cập nhật

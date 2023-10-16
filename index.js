@@ -6,7 +6,7 @@ var flash = require('express-flash')
 var cookieParser = require('cookie-parser')
 var session = require('express-session')
 var path = require('path');
-
+const moment = require("moment")
 
 
 //Require các thành phần vừa viết
@@ -35,6 +35,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
 
 //Truyền app vào routes chính của Client và Admin trước ta đặt là index.routes
 routeClient(app)

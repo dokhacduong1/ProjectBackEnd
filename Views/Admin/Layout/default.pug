@@ -8,33 +8,34 @@ html
     link(rel="stylesheet", href="/Admin/Css/style.css")
 
   body
-    
-    include ../Partials/header.pug
 
-    .body
-    
-      include ../Partials/sider.pug
+    if (role.permissions.length > 0)
+      include ../Partials/header.pug
 
-      .main
-        block main
+      .body
 
-    <script type="application/javascript" src= "/tinymce/tinymce.min.js"></script>
-    <script type="application/javascript" src= "/Admin/Js/my-tinymce-config.js"></script>
-    
-    //- bootstrap
-    script(src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js") 
-    script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js")
+        include ../Partials/sider.pug
 
-    //- script(src="/Admin/Js/index.js") 
-    //- Các module tự tạo
-    script(src="/Admin/Components/checkBoxMulti.js")
-    script(src="/Admin/Components/deleteItem.js") 
-    script(src="/Admin/Components/deleteItemForever.js") 
-    script(src="/Admin/Components/filterItem.js") 
-    script(src="/Admin/Components/formChangeMulti.js") 
-    script(src="/Admin/Components/pagination.js") 
-    script(src="/Admin/Components/previewImageSingle.js") 
-    script(src="/Admin/Components/restoreItem.js") 
-    script(src="/Admin/Components/searchItem.js") 
-    script(src="/Admin/Components/showAlert.js") 
-    script(src="/Admin/Components/boxSort.js") 
+        .main
+          block main
+
+      <script type="application/javascript" src= "/tinymce/tinymce.min.js"></script>
+      <script type="application/javascript" src= "/Admin/Js/my-tinymce-config.js"></script>
+
+      //- bootstrap
+      script(src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js") 
+      script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js")
+
+      script(src="/Admin/Components/checkBoxMulti.js")
+      script(src="/Admin/Components/deleteItem.js") 
+      script(src="/Admin/Components/deleteItemForever.js") 
+      script(src="/Admin/Components/filterItem.js") 
+      script(src="/Admin/Components/formChangeMulti.js") 
+      script(src="/Admin/Components/pagination.js") 
+      script(src="/Admin/Components/previewImageSingle.js") 
+      script(src="/Admin/Components/restoreItem.js") 
+      script(src="/Admin/Components/searchItem.js") 
+      script(src="/Admin/Components/showAlert.js") 
+      script(src="/Admin/Components/boxSort.js") 
+
+  

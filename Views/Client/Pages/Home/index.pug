@@ -1,4 +1,15 @@
 extends ../../Layout/default.pug
 include ../../Mixin/box-head.pug
+include ../../Mixin/product-layout.pug
 block main
-  +box-head("Đây Là Trang Chủ")
+  .container.my-3
+    .row
+      .col-12
+        +box-head("Sản Phẩm Nổi Bật")
+    +product-grid(productsFeatured)
+    .row
+      .col-12
+        +box-head("Sản Phẩm Mới")
+    +product-grid(productsNew)
+    
+

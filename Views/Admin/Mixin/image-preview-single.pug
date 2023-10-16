@@ -1,9 +1,9 @@
-mixin image-preview-single(src="")
+mixin image-preview-single(src="",forOk="thumbnail")
     input(
         type ="file"
         class="form-control-file"
-        id="thumbnail"
-        name="thumbnail"
+        id=forOk
+        name=forOk
         accept="image/*"
         upload-image-input
       )

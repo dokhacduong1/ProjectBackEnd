@@ -1,0 +1,68 @@
+extends ../../Layout/default.pug
+include ../../Mixin/filter-status.pug
+include ../../Mixin/search-item.pug
+include ../../Mixin/pagination.pug
+include ../../Mixin/form-change-multi.pug
+include ../../Mixin/alert.pug
+include ../../Mixin/sort.pug
+include ../../Mixin/table-tree-blogs.pug
+include ../../Mixin/moment.pug
+block main
+    if(role.permissions.includes("products-category_view"))
+        +alert-error(3000)
+        +alert-success(1000)
+        h1 Danh Mục Bài Viết
+        .card.mb-3
+            .card-header Bộ lọc và Tìm kiếm
+            .card-body
+                .row
+                    .col-6
+                        +filter-status(filterStatus)
+                    .col-6
+                        +search-item("Tìm Kiếm")
+        
+                        
+        .card.mb-3
+            .card-header Danh Sách Sản Phẩm
+                .card-body
+                    .row
+                        .col-8
+                            if(role.permissions.includes("products-category_edit"))
+                                +form-change-multi(`${prefixAdmin}/blogs-category/change-multi?_method=PATCH`,actionOptions)
+                        .col-4
+                            if(role.permissions.includes("products-category_create"))
+                                a(
+                                href=`${prefixAdmin}/blogs-category/create`
+                                class="btn btn-outline-success"
+                                ) +Thêm Mới
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                            )
+                            thead
+                                tr
+                                    th
+                                        input(type="checkbox" name="checkall")
+                                    
+                                    th Hình ảnh
+                                    th Tiêu đề
+                                    th Vị Trí
+                                    th Trạng thái
+                                    th Người Tạo
+                                    th Người Cập Nhật
+                                    th Hành động
+                            tbody
+                                if(record)
+                                    +table-tree(record,1,objectPagination)
+        +pagination(objectPagination,3)
+        form(
+            method="POST"
+            id = "form-change-status"
+            data-path=`${prefixAdmin}/blogs-category/change-status`
+            )
+        form(
+            method="POST"
+            id = "form-delete-status"
+            data-path=`${prefixAdmin}/blogs-category/delete`
+            ) 
+        script(src="/Admin/Components/changeStatus.js") 

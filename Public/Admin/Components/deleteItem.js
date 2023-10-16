@@ -6,7 +6,7 @@ function DeleteItem() {
         const path = formDelete.getAttribute("data-path");
         buttonDelete.forEach(button => {
             button.addEventListener("click", () => {
-                console.log("ok")
+
                 const isComfirm = confirm("Bạn Có Chắc Muốn Xóa Sản Phẩm Này?")
                 if (isComfirm) {
                     const id = button.getAttribute("data-id");
