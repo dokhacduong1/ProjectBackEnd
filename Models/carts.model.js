@@ -5,6 +5,7 @@ const mongoose = require("mongoose")
 const cartsSchema = new mongoose.Schema(
 {
     user_id:String,
+    user_ip:String,
     products:[
         {
             product_id:String,

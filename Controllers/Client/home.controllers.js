@@ -1,6 +1,6 @@
 const Product = require("../../Models/product.model")
 const prodcutHelper = require("../../Helpers/product")
-var ip = require('ip');
+
 //[GET] /
 module.exports.index = async function (req, res) {
 
@@ -10,8 +10,7 @@ module.exports.index = async function (req, res) {
         featured: "1",
         status: "active"
     }).limit(4)
-   console.log(ip.address())
- 
+   
     const newProductsFeatured = prodcutHelper.priceNewProducts(productFeatured)
 
     //Lấy ra sản phẩm mới nhất
@@ -22,11 +21,11 @@ module.exports.index = async function (req, res) {
     const newProductsNew = prodcutHelper.priceNewProducts(productsNew)
 
     //Thư mục client/pages/Home sẽ tạo sau
-    // res.render("Client/Pages/Home", {
-    //     title: "Trang Chủ",
-    //     productsFeatured: newProductsFeatured,
-    //     productsNew: newProductsNew
-    // });
-    res.send(ip.address())
+    res.render("Client/Pages/Home", {
+        title: "Trang Chủ",
+        productsFeatured: newProductsFeatured,
+        productsNew: newProductsNew
+    });
+
 
 }

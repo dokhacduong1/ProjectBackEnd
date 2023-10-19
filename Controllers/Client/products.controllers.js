@@ -36,7 +36,7 @@ module.exports.detail = async function (req, res) {
             record.category = category
         }
         record.priceNew = prodcutHelper.priceNewProductSingle(record)
-        console.log(record)
+
         res.render("Client/Pages/Products/detail",{
             title:"Trang Sản Phẩm",
             product:record

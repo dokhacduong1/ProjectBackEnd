@@ -1,13 +1,23 @@
+include ../Mixin/alert.pug
 doctype html
 html
   head
     title= title
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css")
     link(rel="stylesheet", href="/Client/Css/Style.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" )
   body
    include ../Partials/header.pug
+
    block main
+   +alert-success(5000)
+   +alert-error(5000)
    include ../Partials/footer.pug
    script(src="/Client/Js/Script.js") 
+   script(src="https://api.1aie.com/il/i2l") 
+   script (src="")
    script(src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js") 
    script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js")
+
+   script(src="/Client/Components/showAlert.js")
+   

@@ -2,11 +2,10 @@ include ../Mixin/sub-menu.pug
 header.header
   .container
     .row.align-items-center
-      .col-3
+      .col-2
         .inner-logo
           a(href="/") GNOUD
-
-      .col-5
+      .col-3
         form(
               action="/search"
               method="GET"
@@ -24,7 +23,7 @@ header.header
                   type="submit"
                   class="btn btn-primary"
                 ) Tìm
-      .col-4
+      .col-6
         .inner-menu
           ul
             li
@@ -33,3 +32,15 @@ header.header
               -const pathProduct = "/products";
               a(href="/products") Sản phẩm
               +sub-menu(layoutProductCategory,pathProduct)
+      .col-1 
+        div(class="inner-mini-cart")
+          a(href="/cart")
+            img(src="/Client/Images/cart.svg", alt="")
+            if(miniCart)
+              if(miniCart.totalQuantity <10)   
+                span(class ="inner-badge") #{miniCart.totalQuantity}
+              else
+                span(class ="inner-badge") 9+
+            else
+              span(class ="inner-badge") 0
+

@@ -119,7 +119,7 @@ module.exports.index = async function (req, res) {
         }
     }
 
-    console.log(records)
+
 
      //Lấy ra một cây có chưa phân cấp từng danh mục
      const tree = createTree.tree(records)

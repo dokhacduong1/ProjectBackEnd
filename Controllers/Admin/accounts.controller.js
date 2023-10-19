@@ -106,7 +106,7 @@ module.exports.getCreate = async function (req, res) {
         deleted: false,
     }
     const roles = await Role.find(find)
-    console.log(roles)
+  
     res.render("Admin/Pages/Accounts/create", {
         title: "Trang Tài Khoản",
         roles: roles
