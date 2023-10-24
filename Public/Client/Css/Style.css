@@ -298,14 +298,19 @@ body {
   border: 1px solid rgb(201, 32, 39);
   box-shadow: none;
 }
-.product-detail .inner-form button:active{
-    color: rgb(201, 32, 39) !important;
-    background-color: #ffffff !important;
-    border-color: #ff0000 !important;
+
+.product-detail .inner-form button:active {
+  color: rgb(201, 32, 39) !important;
+  background-color: #ffffff !important;
+  border-color: #ff0000 !important;
 }
-.btn-success:not(:disabled):not(.disabled).active:focus, .btn-success:not(:disabled):not(.disabled):active:focus, .show>.btn-success.dropdown-toggle:focus{
+
+.btn-success:not(:disabled):not(.disabled).active:focus,
+.btn-success:not(:disabled):not(.disabled):active:focus,
+.show>.btn-success.dropdown-toggle:focus {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
 }
+
 /* End product-detail */
 
 
@@ -386,23 +391,26 @@ body {
 /* End Show Alert */
 
 /* Cart */
-.header .inner-mini-cart{
+.header .inner-mini-cart {
   position: relative;
   text-align: right;
 }
-.header .inner-mini-cart a{
+
+.header .inner-mini-cart a {
   color: #000;
 }
-.header .inner-mini-cart img{
+
+.header .inner-mini-cart img {
   height: 24px;
   width: auto;
   color: #000;
- 
+
 }
-.header .inner-mini-cart .inner-badge{
+
+.header .inner-mini-cart .inner-badge {
   position: absolute;
   top: -13px;
-    right: -16px;
+  right: -16px;
   border-radius: 25px;
   border: 2px solid #000;
   padding: 0 5px;
@@ -415,6 +423,93 @@ body {
   color: rgb(201, 33, 39);
   font-weight: 700;
   font-size: 13px;
-  
+
 }
+
 /*End Cart */
+
+
+/* sign in */
+.sign {
+  position: relative;
+ 
+}
+
+.sign .box-sign {
+  display: none;
+  position: absolute;
+  width: 300px;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 30px;
+  left: 50%;
+  padding-top: 30px
+}
+
+.sign .box-sign .box-sign-item {
+  background: #fff;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-radius: 5px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: center;
+}
+
+
+.sign .inner-caret{
+  position: absolute;
+  top: -10px;
+}
+.sign .box-sign a {
+  cursor: pointer;
+}
+
+.sign .box-sign .box-sign-item>a {
+  width: 100%;
+
+  padding: 10px;
+
+  margin: 10px;
+  border-radius: 20px;
+  text-align: center;
+  background: #e2e5e7;
+
+}
+
+.sign .box-sign .box-sign-item .box-signin {
+  font-size: 13px;
+}
+
+.sign .box-sign .box-sign-item .box-signin a {
+  text-transform: uppercase;
+}
+
+.sign .box-icon {
+  font-size: 28px;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.sign .box-icon span{
+  text-transform: uppercase;
+  font-size: 15px;
+  margin-left: 8px;
+  text-align: center;
+  font-weight: 600;
+
+}
+.sign:hover>div.box-sign {
+  display: block;
+  /* Hiển thị khi hover vào box-icon */
+}
+
+/*end sign in */

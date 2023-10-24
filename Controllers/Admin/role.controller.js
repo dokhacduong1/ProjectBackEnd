@@ -89,7 +89,8 @@ module.exports.postCreate = async function (req, res) {
     const record = new Role(req.body)
     
     await record.save()
-    res.redirect(`${systemConfig.prefixAdmin}/roles`)
+    res.send("ok")
+    // res.redirect(`${systemConfig.prefixAdmin}/roles`)
 }
 
 //[GET] /roles/edit

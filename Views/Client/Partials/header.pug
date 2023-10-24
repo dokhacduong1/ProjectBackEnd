@@ -1,10 +1,12 @@
 include ../Mixin/sub-menu.pug
 header.header
+  
   .container
     .row.align-items-center
       .col-2
         .inner-logo
           a(href="/") GNOUD
+          
       .col-3
         form(
               action="/search"
@@ -25,13 +27,37 @@ header.header
                 ) Tìm
       .col-6
         .inner-menu
-          ul
+          ul(class="list-menu")
             li
               a(href="/") Trang chủ
             li(class="sub-menu")
               -const pathProduct = "/products";
               a(href="/products") Sản phẩm
               +sub-menu(layoutProductCategory,pathProduct)
+            li(class="sign")
+              div(class="box-icon")
+                i(class="fa-solid fa-circle-user ")
+                if(userClient)
+                  - const user = userClient.fullName.split(" ")
+                  span() #{user[user.length-1]}
+                    
+              div(class="box-sign")
+                div(class="box-sign-item")
+                  i(class="fa-solid fa-caret-up inner-caret")
+                  if(userClient)
+                    a(href="/user/logout") Đăng Xuất  
+                    span Kính Chào Khách Hàng <strong><i>#{userClient.fullName}</i></strong> Thân Mếm !    
+                  else
+                    a(href="/user/login") Đăng Nhập
+                    p(class="box-signin")                  
+                    span Bạn chưa có tài khoản?
+                      a(href="/user/register")  Đăng ký ngay
+                    
+                  
+                  
+            
+                
+
       .col-1 
         div(class="inner-mini-cart")
           a(href="/cart")

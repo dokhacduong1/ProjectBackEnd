@@ -53,7 +53,7 @@ module.exports.cartId = async (req, res, next) => {
         }
        
     }else{
-        console.log("ok1")
+
         await crateCart(res)
     }
     
