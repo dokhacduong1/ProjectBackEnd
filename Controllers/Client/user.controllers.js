@@ -196,6 +196,8 @@ module.exports.postOtp = async function (req, res) {
     email: email,
     deleted: false
   });
+  console.log(user)
+  console.log(email)
   res.cookie("tokenUser", user.tokenUser);
   req.flash("success", "Mã Xác Thực Đúng !")
   res.redirect("/user/password/reset");
