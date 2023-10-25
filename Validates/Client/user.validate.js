@@ -25,3 +25,23 @@ module.exports.loginPort = (req,res,next)=>{
     }
     next()
 }
+
+
+module.exports.resetPasswordPost = (req,res,next)=>{
+    if(!req.body.password){
+        req.flash("error","Vui Lòng Nhập Mật Khẩu");
+        res.redirect("back")
+        return
+    }
+    if(!req.body.confirmPassword){
+        req.flash("error","Vui Lòng Xác Nhận Mật Khẩu");
+        res.redirect("back")
+        return
+    }
+    if(req.body.password !== req.body.confirmPassword){
+        req.flash("error","Mật Khẩu Bạn Nhập Không Khớp!");
+        res.redirect("back")
+        return
+    }
+    next()
+}

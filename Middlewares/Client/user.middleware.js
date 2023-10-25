@@ -7,7 +7,7 @@ module.exports.requireAuthClient = async (req, res, next) => {
         //Nếu không tìm được user bằng token thì cho nó lại trang đăng nhập
         if (user) {
            res.locals.userClient = user;
-           console.log(user.fullName.split(" ").length)
+           
         }
     }
     next();

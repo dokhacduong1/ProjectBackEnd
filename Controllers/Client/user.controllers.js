@@ -1,4 +1,5 @@
 var md5 = require('md5');
+const sendMailHelper = require("../../Helpers/sendMail")
 const User = require("../../Models/user.model")
 const ForgotPassword = require("../../Models/forgot-password.model");
 const generateHelper = require('../../Helpers/generate');
@@ -37,6 +38,7 @@ module.exports.postRegister = async function (req, res) {
 
     }
   } catch (error) {
+
     req.flash("error", "Lỗi Rồi");
   }
 
@@ -45,6 +47,7 @@ module.exports.postRegister = async function (req, res) {
 
 //[GET] /user/Login
 module.exports.getLogin = async function (req, res) {
+
   const userCheck = res.locals.userClient
   if (userCheck) {
     res.redirect("/");
@@ -108,21 +111,101 @@ module.exports.postForgotPassword = async function (req, res) {
       email: email,
       deleted: false
     });
-    if(!email){
+    if (!emailExits) {
       req.flash("error", "Email Không Tồn Tại !")
       res.redirect("back");
       return
     }
     const objectForgotPassword = {
-      email:email,
-      otp:generateHelper.generateRandomNumber(8),
-      expiresAt:Date.now()+300
+      email: email,
+      otp: generateHelper.generateRandomNumber(6),
+      expireAt: Date.now()
     }
     const record = new ForgotPassword(objectForgotPassword);
     await record.save();
+    //Nếu tồn tại email thì gửi về email
+    const otp = record.otp;
+    const subject = "Mã OTP xác minh lấy lại mật khẩu";
+    const html = `
+    <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+  <div style="margin:50px auto;width:70%;padding:20px 0">
+    <div style="border-bottom:1px solid #eee">
+      <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Duong Shop</a>
+    </div>
+    <p style="font-size:1.1em">Hi,</p>
+    <p>Cảm ơn bạn đã sử dụng trang web của Dương. Sử dụng OTP sau để hoàn tất thủ quên mật khẩu của bạn. OTP có hiệu lực trong 3 phút</p>
+    <h2 style="background: #000000;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
+    <p style="font-size:0.9em;">Duong,<br />Duong Shop</p>
+    <hr style="border:none;border-top:1px solid #eee" />
+    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+      <p>Duong Shop</p>
+      <p>An Dương,Hải Phòng</p>
+      <p>Việt Nam</p>
+    </div>
+  </div>
+</div>
+  `;
+    sendMailHelper.sendMail(email, subject, html);
+    res.redirect(`/user/password/otp?email=${email}`);
   } catch (error) {
-
+    console.log(error)
+    // res.redirect("/");
   }
-  res.send("ok")
+
 }
 
+//[GET] /user/password/otp?email
+module.exports.getOtp = async function (req, res) {
+  const email = req.query.email;
+  const emailExits = await ForgotPassword.findOne({
+    email: email,
+  });
+  if (!emailExits) {
+    res.redirect("/");
+    return
+  }
+
+  res.render("Client/Pages/User/otp-password", {
+    title: "Nhập Mã Otp",
+    email,
+  });
+}
+//[POST] /user/password/otp
+module.exports.postOtp = async function (req, res) {
+  const email = req.body.email
+  const otp = req.body.otp
+  const checkAuth = await ForgotPassword.findOne({
+    email: email,
+    otp: otp
+  });
+  if (!checkAuth) {
+    req.flash("error", "Mã Xác Thực Không Chính Xác !")
+    res.redirect("back");
+    return
+  }
+  const user = await User.findOne({
+    email: email,
+    deleted: false
+  });
+  res.cookie("tokenUser", user.tokenUser);
+  req.flash("success", "Mã Xác Thực Đúng !")
+  res.redirect("/user/password/reset");
+
+}
+//[GET] /user/password/reset
+module.exports.getResetPassword = async function (req, res) {
+  res.render("client/pages/user/reset-password", {
+    pageTitle: "Đổi mật khẩu",
+  });
+}
+//[POST] /user/password/reset
+module.exports.postResetPassword = async function (req, res) {
+  const password = req.body.password;
+  const tokenUser = req.cookies.tokenUser;
+  await User.updateOne({
+    tokenUser: tokenUser
+  }, {
+    password: md5(password)
+  });
+  res.redirect("/");
+}
