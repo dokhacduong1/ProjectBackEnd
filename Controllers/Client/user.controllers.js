@@ -125,13 +125,20 @@ module.exports.postForgotPassword = async function (req, res) {
       res.redirect(`/user/password/otp?email=${email}`);
       return
     }
+    //set up time để tự mất
+    const expireAtOk = new Date();
+    expireAtOk.setMinutes(expireAtOk.getMinutes() + 4);
+    console.log(expireAtOk)
     const objectForgotPassword = {
       email: email,
       otp: generateHelper.generateRandomNumber(6),
-      expireAt: Date.now()+180
+      expireAt: expireAtOk
     }
     const record = new ForgotPassword(objectForgotPassword);
+    
     await record.save();
+    const expireAt = new Date(record.expireAt);
+    console.log(expireAt)
     //Nếu tồn tại email thì gửi về email
     const otp = record.otp;
     const subject = "Mã OTP xác minh lấy lại mật khẩu";
@@ -142,7 +149,7 @@ module.exports.postForgotPassword = async function (req, res) {
       <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Duong Shop</a>
     </div>
     <p style="font-size:1.1em">Hi,</p>
-    <p>Cảm ơn bạn đã sử dụng trang web của Dương. Sử dụng OTP sau để hoàn tất thủ quên mật khẩu của bạn. OTP có hiệu lực trong 3 phút <br> Tuyệt đối không chia sẻ mã này dưới mọi hình thức!</p>
+    <p>Cảm ơn bạn đã sử dụng trang web của Dương. Sử dụng OTP sau để hoàn tất thủ quên mật khẩu của bạn. OTP có hiệu lực trong 5 phút <br> Tuyệt đối không chia sẻ mã này dưới mọi hình thức!</p>
     <h2 style="background: #000000;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
     <p style="font-size:0.9em;">Duong,<br />Duong Shop</p>
     <hr style="border:none;border-top:1px solid #eee" />
