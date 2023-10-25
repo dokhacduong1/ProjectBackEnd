@@ -6,7 +6,7 @@ module.exports.generateRandomString = (length) => {
 
   // Initialize Math.random() with a new seed
   const seed = new Date().getTime();
-  Math.seedrandom(seed);
+  Math.random(seed);
 
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -17,17 +17,17 @@ module.exports.generateRandomString = (length) => {
 
 module.exports.generateRandomNumber = (length) => {
   const characters =
-  "0123456789";
+    "0123456789";
 
-let result = "";
+  let result = "";
 
-// Initialize Math.random() with a new seed
-const seed = new Date().getTime();
-Math.seedrandom(seed);
+  // Initialize Math.random() with a new seed
+  const seed = new Date().getTime();
+  Math.random(seed);
 
-for (let i = 0; i < length; i++) {
-  result += characters.charAt(Math.floor(Math.random() * characters.length));
-}
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
 
-return result;
+  return result;
 };
