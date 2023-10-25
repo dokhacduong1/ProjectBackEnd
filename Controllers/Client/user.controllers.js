@@ -111,9 +111,18 @@ module.exports.postForgotPassword = async function (req, res) {
       email: email,
       deleted: false
     });
+    //Check xem email tồn tại hay chưa
     if (!emailExits) {
       req.flash("error", "Email Không Tồn Tại !")
       res.redirect("back");
+      return
+    }
+    const ForgotPasswordExits = await ForgotPassword.findOne({
+      email: email,
+    });
+    //Check xem người dùng có ấn quên mật khẩu nhiều lần không nếu có rồi thì link lại trang nhập otp
+    if (ForgotPasswordExits) {  
+      res.redirect(`/user/password/otp?email=${email}`);
       return
     }
     const objectForgotPassword = {
@@ -133,7 +142,7 @@ module.exports.postForgotPassword = async function (req, res) {
       <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Duong Shop</a>
     </div>
     <p style="font-size:1.1em">Hi,</p>
-    <p>Cảm ơn bạn đã sử dụng trang web của Dương. Sử dụng OTP sau để hoàn tất thủ quên mật khẩu của bạn. OTP có hiệu lực trong 3 phút</p>
+    <p>Cảm ơn bạn đã sử dụng trang web của Dương. Sử dụng OTP sau để hoàn tất thủ quên mật khẩu của bạn. OTP có hiệu lực trong 3 phút <br> Tuyệt đối không chia sẻ mã này dưới mọi hình thức!</p>
     <h2 style="background: #000000;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
     <p style="font-size:0.9em;">Duong,<br />Duong Shop</p>
     <hr style="border:none;border-top:1px solid #eee" />
@@ -145,11 +154,11 @@ module.exports.postForgotPassword = async function (req, res) {
   </div>
 </div>
   `;
-    sendMailHelper.sendMail(email, subject, html);
+     sendMailHelper.sendMail(email, subject, html);
     res.redirect(`/user/password/otp?email=${email}`);
   } catch (error) {
-    console.log(error)
-    // res.redirect("/");
+    
+    res.redirect("/");
   }
 
 }
