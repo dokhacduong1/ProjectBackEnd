@@ -206,13 +206,13 @@ module.exports.postOtp = async function (req, res) {
   console.log(user)
   console.log(email)
   res.cookie("tokenUser", user.tokenUser);
-  req.flash("success", "Mã Xác Thực Đúng !")
+  
   res.redirect("/user/password/reset");
 
 }
 //[GET] /user/password/reset
 module.exports.getResetPassword = async function (req, res) {
-  res.render("client/pages/user/reset-password", {
+  res.render("Client/Pages/User/reset-password", {
     pageTitle: "Đổi mật khẩu",
   });
 }
