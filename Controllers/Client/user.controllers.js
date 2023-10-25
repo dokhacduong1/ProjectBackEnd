@@ -128,7 +128,7 @@ module.exports.postForgotPassword = async function (req, res) {
     const objectForgotPassword = {
       email: email,
       otp: generateHelper.generateRandomNumber(6),
-      expireAt: Date.now()
+      expireAt: Date.now()+180
     }
     const record = new ForgotPassword(objectForgotPassword);
     await record.save();
