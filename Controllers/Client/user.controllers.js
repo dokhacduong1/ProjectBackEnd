@@ -96,6 +96,7 @@ module.exports.postLogin = async function (req, res) {
 
   res.redirect("/");
 }
+
 //[GET] /user/forgot
 module.exports.getForgotPassword = async function (req, res) {
   res.render("Client/Pages/User/forgot-password", {
@@ -103,6 +104,7 @@ module.exports.getForgotPassword = async function (req, res) {
 
   });
 }
+
 //[POST] /user/forgot
 module.exports.postForgotPassword = async function (req, res) {
   try {
@@ -226,4 +228,39 @@ module.exports.postResetPassword = async function (req, res) {
     password: md5(password)
   });
   res.redirect("/");
+}
+
+//[GET] /user/info
+module.exports.getInfo = async function (req, res){
+ 
+  res.render("Client/Pages/User/info", {
+    pageTitle: "Thông Tin Người Dùng",
+  });
+}
+
+//[POST] /user/info
+module.exports.postInfo = async function (req, res){
+  const tokenUser = req.cookies.tokenUser;
+  const email = req.body.email
+  const fullName = req.body.fullName
+  const emailExits = await User.findOne({
+    tokenUser: { $ne: tokenUser },
+    email: email,
+    deleted: false
+  });
+
+  //Check xem email tồn tại hay chưa
+  if (emailExits) {
+    req.flash("error", "Email Đã Tồn Tại !")
+    res.redirect("back");
+    return
+  }
+  
+  await User.updateOne({
+    tokenUser: tokenUser
+  }, {
+    email: email,
+    fullName:fullName
+  });
+  res.redirect("back");
 }

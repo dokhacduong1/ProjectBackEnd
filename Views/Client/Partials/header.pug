@@ -39,7 +39,7 @@ header.header
                 i(class="fa-solid fa-circle-user ")
                 if(userClient)
                   - const user = userClient.fullName.split(" ")
-                  span() #{user[user.length-1]}
+                  a(href="/user/info") #{user[user.length-1]}
                     
               div(class="box-sign")
                 div(class="box-sign-item")
