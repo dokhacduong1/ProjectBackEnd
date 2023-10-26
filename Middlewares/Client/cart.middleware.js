@@ -1,61 +1,72 @@
+const Cart = require("../../Models/carts.model");
+const User = require("../../Models/user.model");
+const axios = require("axios");
 
-const Cart = require("../../Models/carts.model")
-const axios = require("axios")
+const expiresCookie = 1000 * 60 * 60 * 24 * 365;
 
+// Hàm tạo giỏ hàng mới hoặc lấy giỏ hàng hiện có bằng địa chỉ IP
+async function createOrGetCartByIP(user_ip) {
+    const existingCart = await Cart.findOne({ user_ip });
+
+    if (existingCart) {
+        return existingCart;
+    } else {
+        const newCart = new Cart({ user_ip });
+        await newCart.save();
+        return newCart;
+    }
+}
+
+// Middleware tạo giỏ hàng dựa trên địa chỉ IP
 async function crateCart(res) {
     try {
-       
-        let idCookie = ""
-        const instance = axios.create({
-            timeout: 10000 // Timeout sau 10 giây (hoặc bạn có thể thay đổi thời gian timeout tùy ý)
-          });
-        const { data } = await instance.get("https://api.ipify.org/?format=json");
-        
+        const { data } = await axios.get("https://api.ipify.org/?format=json");
         const user_ip = data.ip;
-        const existingCart = await Cart.findOne({ user_ip });
-        const expiresCookie = 1000 * 60 * 60 * 24 * 365;
-        
-        let cart = {};
-        //check xem nếu có ip giỏ hàng này rồi thì cho nó vào lại cookie tránh người dùng xóa cookie linh tinh
-        if (existingCart) {
-            idCookie = existingCart.id
-            cart = existingCart
-        } else {
-            const newCart = new Cart({ user_ip: user_ip });
-            await newCart.save();
-            idCookie = newCart.id
-            cart = newCart
-        }
-        //Lưu giá trị số lượng sản phẩm để in ra màn hình
-        cart.totalQuantity = cart.products.reduce((total, dataReduce) => total + dataReduce.quantity, 0)
-        res.locals.miniCart = cart
 
-        res.cookie("cartId", idCookie, {
-            expires: new Date(Date.now() + expiresCookie) // cookie will be removed after 8 hours
-        });
+        const cart = await createOrGetCartByIP(user_ip);
+        cart.totalQuantity = cart.products.reduce((total, dataReduce) => total + dataReduce.quantity, 0);
+        res.locals.miniCart = cart;
 
+        res.cookie("cartId", cart.id, { expires: new Date(Date.now() + expiresCookie) });
     } catch (error) {
         console.error("Lỗi trong quá trình xử lý giỏ hàng:", error);
     }
 }
 
+// Middleware xử lý giỏ hàng
 module.exports.cartId = async (req, res, next) => {
     const cartId = req.cookies.cartId;
-    //nếu tồn tại cookie có tên carId thì vào trong if không thì tạo cái mới
-    if(cartId){       
-        const cart = await Cart.findOne({_id: cartId});
-        //nếu tìm thấy giỏ hàng thì gán giá trị totalQuantity cho cart luôn không tìm thấy thì cũng tạo cái mới
-        if(cart){
-            cart.totalQuantity = cart.products.reduce((total, dataReduce) => total + dataReduce.quantity, 0)
-            res.locals.miniCart = cart
-        }else{
-            await crateCart(res)
-        }
-       
-    }else{
-
-        await crateCart(res)
-    }
+    const tokenUser = req.cookies.tokenUser;
     
+    if (tokenUser) {
+        const user = await User.findOne({ tokenUser });
+
+        if (user) {
+            const cart = await Cart.findOne({ user_id: user.id });
+
+            if (cart) {
+                cart.totalQuantity = cart.products.reduce((total, dataReduce) => total + dataReduce.quantity, 0);
+                res.locals.miniCart = cart;
+                res.cookie("cartId", cart.id, { expires: new Date(Date.now() + expiresCookie) });
+            } else {
+                res.clearCookie("tokenUser");
+            }
+        }
+    } else {
+        if (cartId) {
+            const cart = await Cart.findOne({ _id: cartId });
+
+            if (cart) {
+                cart.totalQuantity = cart.products.reduce((total, dataReduce) => total + dataReduce.quantity, 0);
+                res.locals.miniCart = cart;
+            } else {
+                await crateCart(res);
+            }
+        } else {
+            await crateCart(res);
+        }
+    }
+
     next();
-}
+};
+

@@ -1,8 +1,11 @@
 var md5 = require('md5');
+const generate = require("../../Helpers/generate")
 const sendMailHelper = require("../../Helpers/sendMail")
 const User = require("../../Models/user.model")
 const ForgotPassword = require("../../Models/forgot-password.model");
+const Cart = require("../../Models/carts.model")
 const generateHelper = require('../../Helpers/generate');
+
 //[GET] /user/register
 module.exports.getRegister = async function (req, res) {
   const userCheck = res.locals.userClient
@@ -26,11 +29,16 @@ module.exports.postRegister = async function (req, res) {
       req.flash("error", "Email Đã Tồn Tại");
     }
     else {
+      const idCard = req.cookies.cartId;
+      req.body.tokenUser= generate.generateRandomString(20)
       req.body.password = md5(req.body.password);
       const record = new User(req.body);
       await record.save();
       const expiresCookie = 1000 * 60 * 60 * 24 * 365;
-
+      await Cart.updateOne({_id:idCard},{
+        user_id:record.id,
+        user_ip:""
+      })
       res.cookie("tokenUser", record.tokenUser, {
         expires: new Date(Date.now() + expiresCookie) // cookie will be removed after 8 hours
       })
@@ -41,7 +49,7 @@ module.exports.postRegister = async function (req, res) {
 
     req.flash("error", "Lỗi Rồi");
   }
-
+ 
   res.redirect(`/`);
 }
 
@@ -61,6 +69,7 @@ module.exports.getLogin = async function (req, res) {
 //[GET] /user/Logout
 module.exports.getLogout = async function (req, res) {
   res.clearCookie("tokenUser")
+  res.clearCookie("cartId")
   res.redirect("/");
 }
 

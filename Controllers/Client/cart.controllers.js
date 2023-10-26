@@ -8,6 +8,7 @@ module.exports.index = async function (req, res) {
         const cart = await Cart.findOne({
             _id: cartId
         })
+        
         if (cart.products.length > 0) {
             const listIdProducts = cart.products.map(dataMap => dataMap.product_id);
             const listProducts = await Product.find({ _id: { $in: listIdProducts } })
