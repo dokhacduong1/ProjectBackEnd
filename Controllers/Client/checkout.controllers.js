@@ -1,10 +1,13 @@
 const Cart = require("../../Models/carts.model")
 const Product = require("../../Models/product.model")
 const Order = require("../../Models/order.model")
+
 const prodcutHelper = require("../../Helpers/product")
 module.exports.index = async function (req, res) {
     try {
         const cartId = req.cookies.cartId;
+        const tokenUser = req.cookies.tokenUser;
+        const user = [];
         const cart = await Cart.findOne({
             _id: cartId
         })
@@ -26,6 +29,7 @@ module.exports.index = async function (req, res) {
         } else {
             cart.productInfo = []
         }
+        
         res.render("Client/Pages/Checkout", {
             title: "Đặt Hàng",
             cartDetail: cart,

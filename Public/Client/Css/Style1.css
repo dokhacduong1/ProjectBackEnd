@@ -1,3 +1,6 @@
+.mt-80{
+  margin-top: 80px;
+}
 body {
   font-family: Roboto, sans-serif;
 }
@@ -7,6 +10,10 @@ body {
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
   background-color: #e2e5e7;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  top:0
 }
 
 .header .inner-logo a {
@@ -394,6 +401,8 @@ body {
 .header .inner-mini-cart {
   position: relative;
   text-align: right;
+  cursor: pointer;
+
 }
 
 .header .inner-mini-cart a {
@@ -516,3 +525,86 @@ body {
 }
 
 /*end sign in */
+
+/* chat */
+.chat {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.chat .inner-head {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.chat .inner-head .inner-avatar {
+  background: #FE5DA3;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-block;
+  font-weight: 700;
+  text-align: center;
+  line-height: 32px;
+  color: #fff;
+}
+
+.chat .inner-head .inner-name {
+  display: inline-block;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.chat .inner-body {
+  padding: 10px;
+}
+
+.chat .inner-body .inner-name {
+  font-weight: 600;
+}
+
+.chat .inner-body .inner-content {
+  background: #F1F1F1;
+  margin-bottom: 10px;
+  max-width: 220px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  line-height: 1.4;
+}
+
+.chat .inner-outgoing .inner-content {
+  margin-left: auto;
+  background: #FE5DA3;
+  color: #fff;
+}
+
+.chat .inner-foot {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+.chat .inner-form {
+  display: flex;
+  align-items: center;
+}
+
+.chat .inner-form input {
+  flex: 1;
+  height: 32px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 0 10px;
+  outline: none;
+}
+
+.chat .inner-form button {
+  border-radius: 15px;
+  border: 1px solid #FE5DA3;
+  background: #FE5DA3;
+  color: #fff;
+  height: 32px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+/* End chat */

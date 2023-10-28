@@ -2,7 +2,7 @@ extends ../../Layout/default.pug
 include ../../Mixin/box-head.pug
 
 block main
-  .container.my-3
+  .container.mt-80
     .row
       .col-12
         +box-head("Thông tin tài khoản")
@@ -36,9 +36,27 @@ block main
                         required
                         )
                     div(class="form-group")
+                        label(for="phone") Số Điện Thoại
+                        input(
+                        class="form-control"
+                        id="phone"
+                        name="phone"
+                        value = user.phone
+                        required
+                        )
+                    div(class="form-group")
+                        label(for="address") Địa Chỉ
+                        input(
+                        class="form-control"
+                        id="address"
+                        name="address"
+                        value = user.address
+                        required
+                        )
+                    div(class="form-group")
                         button(
                         type="submit"
                         class="btn btn-secondary btn-block"
-                        ) Đổi Thông Tin
+                        ) Sửa Thông Tin
     
                 

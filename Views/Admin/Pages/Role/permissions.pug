@@ -162,6 +162,22 @@ block main
                         each item in records
                             td(class="text-center")
                                 input(type="checkbox")
+
+                    //- Cài Đặt CHung
+                    tr
+                        td(colspan="4")
+                            b Cài Đặt Chung
+                    tr(data-name="settings-general_view")
+                        td Xem
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+                    tr(data-name="settings-general_edit")
+                        td Chỉnh sửa
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+
                     //- Blogs-Category
                     tr
                         td(colspan="4")

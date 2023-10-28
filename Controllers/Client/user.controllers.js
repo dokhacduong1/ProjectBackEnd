@@ -251,7 +251,6 @@ module.exports.getInfo = async function (req, res){
 module.exports.postInfo = async function (req, res){
   const tokenUser = req.cookies.tokenUser;
   const email = req.body.email
-  const fullName = req.body.fullName
   const emailExits = await User.findOne({
     tokenUser: { $ne: tokenUser },
     email: email,
@@ -264,12 +263,9 @@ module.exports.postInfo = async function (req, res){
     res.redirect("back");
     return
   }
-  
+  console.log(req.body)
   await User.updateOne({
     tokenUser: tokenUser
-  }, {
-    email: email,
-    fullName:fullName
-  });
+  }, req.body);
   res.redirect("back");
 }

@@ -11,7 +11,7 @@ block main
       .col-12
         +box-head("Đặt hàng")
 
-
+    
     .row
       .col-12
         table(class="table table-bordered")
@@ -62,6 +62,7 @@ block main
                   id="fullName"
                   name="fullName"
                   required
+                  value = `${userClient ? userClient.fullName : ""}`
                 )
               div(class="form-group")
                 label(for="phone") Số điện thoại
@@ -71,6 +72,7 @@ block main
                   id="phone"
                   name="phone"
                   required
+                  value = `${userClient ? userClient.phone : ""}`
                 )
               div(class="form-group")
                 label(for="address") Địa chỉ
@@ -80,6 +82,7 @@ block main
                   id="address"
                   name="address"
                   required
+                  value = `${userClient ? userClient.address : ""}`
                 )
               div(class="form-group")
                 button(

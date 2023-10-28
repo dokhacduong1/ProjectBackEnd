@@ -5,7 +5,7 @@ header.header
     .row.align-items-center
       .col-2
         .inner-logo
-          a(href="/") GNOUD
+          a(href="/") #{settingGeneral.websiteName}
           
       .col-3
         form(
@@ -46,7 +46,9 @@ header.header
                   i(class="fa-solid fa-caret-up inner-caret")
                   if(userClient)
                     a(href="/user/logout") Đăng Xuất  
-                    span Kính Chào Khách Hàng <strong><i>#{userClient.fullName}</i></strong> Thân Mếm !    
+                    span Kính Chào Khách Hàng <strong><i>#{userClient.fullName}</i></strong> Thân Mếm !
+                    p
+                      a(href="/chat" style="text-decoration: revert;") Nhấn Vào Đây Để Chat  
                   else
                     a(href="/user/login") Đăng Nhập
                     p(class="box-signin")                  

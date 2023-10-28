@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session')
 var path = require('path');
 const moment = require("moment")
+const http = require('http');
+const { Server } = require("socket.io");
 
 
 //Require các thành phần vừa viết
@@ -18,6 +20,12 @@ const systemConfig = require("./Config/systems")
 
 //Tạo một đối tượng app
 const app = express()
+//Cấu hình để tạo một máy chủ HTTP mới
+const server = http.createServer(app);
+//Tạo một máy chỏ Socket.Io lưu vào biến io
+const io = new Server(server);
+//Tạo một biến toàn cục có tên _io gán vào io có tác dụng dùng mọi nơi
+global._io =io
 
 //Cấu hình để nhận data body khi request
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -57,8 +65,17 @@ database.connect();
 //Tạo cổng cho có là 3000
 const port = process.env.PORT
 
+//Tạo ra trang 404
+app.get("*", (req, res) => {
+  res.render("Client/Pages/Errors/404", {
+    pageTitle: "404 Not Found",
+  });
+});
+
+
+
 //Cho expres lắng nghe cổng 3000 và chạy cổng
-app.listen(port, () => {
+server.listen(port, () => {
   console.log("ok",`${__dirname}/Public`)
   console.log(`Example app listening on port ${port}`)
 })
