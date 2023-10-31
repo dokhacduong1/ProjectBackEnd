@@ -3,6 +3,7 @@ const Product = require("../../Models/product.model")
 const Order = require("../../Models/order.model")
 
 const prodcutHelper = require("../../Helpers/product")
+//[GET] /checkout
 module.exports.index = async function (req, res) {
     try {
         const cartId = req.cookies.cartId;
@@ -11,12 +12,8 @@ module.exports.index = async function (req, res) {
         const cart = await Cart.findOne({
             _id: cartId
         })
-        if(cart.products.length<1){
-            req.flash("error","Vui Lòng Thêm Số Lượng Lớn Hơn 1");
-            res.redirect("back")
-            return
-        }
-        console.log(cart)
+      
+        
         if (cart.products.length > 0) {
             const listIdProducts = cart.products.map(dataMap => dataMap.product_id);
             const listProducts = await Product.find({ _id: { $in: listIdProducts } })
