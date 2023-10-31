@@ -93,6 +93,11 @@ module.exports.delete = async function (req, res){
 module.exports.update = async function (req, res){
     const cartId = req.cookies.cartId;
     const {productId,quantity} = req.params
+    if(quantity<1){
+        req.flash("error","Vui Lòng Thêm Số Lượng Lớn Hơn 1");
+        res.redirect("back")
+        return
+    }
     await Cart.updateOne({
         _id:cartId,
         "products.product_id":productId
