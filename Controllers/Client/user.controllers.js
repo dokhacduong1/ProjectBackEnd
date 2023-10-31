@@ -103,7 +103,7 @@ module.exports.postLogin = async function (req, res) {
     req.flash("error", "Lỗi Rồi");
   }
 
-  res.redirect("/");
+  res.redirect("/user/login");
 }
 
 //[GET] /user/forgot
