@@ -11,6 +11,12 @@ module.exports.index = async function (req, res) {
         const cart = await Cart.findOne({
             _id: cartId
         })
+        if(cart.products.length<1){
+            req.flash("error","Vui Lòng Thêm Số Lượng Lớn Hơn 1");
+            res.redirect("back")
+            return
+        }
+        console.log(cart)
         if (cart.products.length > 0) {
             const listIdProducts = cart.products.map(dataMap => dataMap.product_id);
             const listProducts = await Product.find({ _id: { $in: listIdProducts } })
@@ -48,6 +54,11 @@ module.exports.oders = async function (req, res) {
     const cart = await Cart.findOne({
         _id: cartId
     })
+    if(cart.products.length<1){
+        req.flash("error","Vui Lòng Thêm Số Lượng Lớn Hơn 1");
+        res.redirect("back")
+        return
+    }
     if (cart.products.length > 0) {
         const listIdProducts = cart.products.map(dataMap => dataMap.product_id);
         const listProducts = await Product.find({ _id: { $in: listIdProducts } })
