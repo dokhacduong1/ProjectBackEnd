@@ -40,8 +40,12 @@ module.exports.index = async function (req, res) {
     const listUser = await User.find({ deleted: false }).select("fullName")
     chats.forEach(dataMap => {
         const checkName = listUser.filter(dataFilter => dataFilter.id === dataMap.user_id)
-        dataMap.infoUser = checkName[0]
-    })
+        if(checkName[0].fullName){
+            console.log(checkName)
+            dataMap.infoUser = checkName[0]
+        }
+       
+    })  
     res.render("Client/Pages/Chat", {
         title: "Chat",
         chats: chats

@@ -3,11 +3,11 @@ include ../../Mixin/image-preview-single.pug
 include ../../Mixin/alert.pug
 include ../../Mixin/select-tree.pug
 block main
-  if(role.permissions.includes("blogs-category_edit"))
+  if(role.permissions.includes("blogs_edit"))
     +alert-error(3000)
-    h1(class="mb-4") Sửa Bài Viết
+    h1(class="mb-4") Chỉnh Sửa Blogs
     form(
-      action=`${prefixAdmin}/blogs-category/edit/${record.id}?_method=PATCH`
+      action=`${prefixAdmin}/blogs/edit/${record.id}?_method=PATCH`
       id="form-edit-product"
       method="POST"
       enctype="multipart/form-data"
@@ -19,33 +19,64 @@ block main
           class="form-control"
           id="title"
           name="title"
-          value =record.title
+          value=record.title
         )
       div(class="form-group")
-        label(for="parent_id") Danh mục cha
+        label(for="blog_category_id") Danh mục
         select(
-          name="parent_id"
-          id="parent_id"
-          class ="form-control"
+          name="blog_category_id"
+          id="blog_category_id"
+          class="form-control"
         )
-          option(value="") -- Chọn danh mục cha --
-          if(treeRecord)
-            +select-tree(treeRecord,1,record.parent_id)
+          option(value="") -- Chọn danh mục --
+          if(recordTree)
+            +select-tree(recordTree,1,record.blog_category_id)
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured"
+          name="featured"
+          value="1"
+          checked=(record.featured == "1")
+        )
+        label(for="featured1" class="form-check-label") Nổi bật
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured0"
+          name="featured"
+          value="0"
+          checked=(record.featured == "0")
+        )
+        label(for="featured0" class="form-check-label") Không
       div(class="form-group")
         label(for="desc") Mô tả
         textarea(
           tinymce
-          class="form-control textarea-mce"
+          class="form-control"
           id="desc"
           name="description"
           rows="5"
         ) #{record.description}
+      div(class="form-group")
+        label(for="desc") Nội Dung
+        textarea(
+          tinymce
+          class="form-control"
+          id="content"
+          name="content"
+          rows="5"
+        ) #{record.content}
+      
+      
       div(
         class="form-group"
-        upload-image
       )
         label(for="thumbnail") Ảnh
         +image-preview-single(record.thumbnail)
+      
       div(class="form-group")
         label(for="position") Vị trí
         input(
@@ -81,4 +112,6 @@ block main
         button(
           type="submit"
           class="btn btn-primary"
-        ) Sửa Danh Mục
+        ) Sửa Blogs
+
+    script(src="/Admin/Js/products.js") 

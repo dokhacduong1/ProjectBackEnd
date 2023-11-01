@@ -1,0 +1,112 @@
+extends ../../Layout/default.pug
+include ../../Mixin/filter-status.pug
+include ../../Mixin/search-item.pug
+include ../../Mixin/pagination.pug
+include ../../Mixin/form-change-multi.pug
+include ../../Mixin/alert.pug
+include ../../Mixin/sort.pug
+include ../../Mixin/moment.pug
+block main
+    if(role.permissions.includes("account-client_view"))
+        h1(class="mb-4") Danh sách tài khoản Client
+        .card.mb-3
+            .card-header Bộ lọc và Tìm kiếm
+            .card-body
+                .row
+                    .col-6
+                        +filter-status(filterStatus)
+                    .col-6
+                        +search-item("Tìm Kiếm")
+        .card.mb-3
+            .card-header Danh sách
+            .card-body
+                .row
+                    .col-8
+                        if(role.permissions.includes("account-client_edit"))
+                            +form-change-multi(`${prefixAdmin}/users/change-multi?_method=PATCH`,actionOptions)
+                    .col-4.text-right
+                        a(
+                            href=`${prefixAdmin}/accounts/create`
+                            class="btn btn-outline-success"
+                        ) + Thêm mới
+
+                table(
+                    class="table table-hover table-sm"
+                    checkbox-multi
+                )
+                    thead
+                        tr
+                            th
+                                input(type="checkbox" name="checkall")
+                            th STT
+                            th Họ tên                           
+                            th Email
+                            th Trạng thái
+                            
+                            th Người Cập Nhật
+                            th Hành động
+
+                    tbody  
+                        each item, index in records
+                            tr 
+                                td
+                                    input(
+                                        type="checkbox"
+                                        name="id"
+                                        value=item.id
+                                    )
+                                td #{objectPagination.limitItem*objectPagination.currentPage+index-(objectPagination.limitItem-1)}
+                                td #{item.fullName}
+                                td #{item.email}
+                                td
+                                    if(role.permissions.includes("account-client_edit"))
+                                        if (item.status === "active")
+                                            a(
+                                                button-change-status = item.status
+                                                    data-id = item.id
+                                                href="javascript:;"
+                                                class="badge badge-success"
+                                                data-status="active"
+                                            ) Hoạt động
+                                        else
+                                            a(
+                                                button-change-status = item.status
+                                                    data-id = item.id
+                                                href="javascript:;"
+                                                class="badge badge-danger"
+                                                data-status="inactive"
+                                            ) Dừng hoạt động
+                                td
+                                    - const updatedBy = item.updatedBy.slice(-1)[0];
+                                    if(updatedBy)
+                                        p #{updatedBy.accountFullName}
+                                        p
+                                            +formatDateTime(updatedBy.updatedAt)
+                                td
+                                    a(
+                                        class="btn btn-secondary btn-sm"
+                                        href=`${prefixAdmin}/users/detail/${item.id}`
+                                    ) Chi tiết
+                                    if(role.permissions.includes("account-client_edit"))
+                                        a(
+                                            class="btn btn-warning btn-sm ml-1"
+                                            href=`${prefixAdmin}/users/edit/${item.id}`
+                                        ) Sửa
+                                    if(role.permissions.includes("account-client_delete"))
+                                        button(
+                                            data-id =item.id
+                                            button-delete
+                                            class="btn btn-danger btn-sm ml-1"
+                                        ) Xóa
+        +pagination(objectPagination,3)
+        form(
+            method="POST"
+            id = "form-change-status"
+            data-path=`${prefixAdmin}/users/change-status`
+            )
+        form(
+            method="POST"
+            id = "form-delete-status"
+            data-path=`${prefixAdmin}/users/delete`
+            ) 
+        script(src="/Admin/Components/changeStatus.js")

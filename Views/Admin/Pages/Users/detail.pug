@@ -1,0 +1,31 @@
+extends ../../Layout/default.pug
+
+block main
+  if(role.permissions.includes("account-client_view"))
+    if (record.fullName)
+      h1(class="mb-4") #{record.fullName}
+    if (record.phone)
+      h1(class="mb-4") #{record.phone}
+    if (record.address)
+      h1(class="mb-4") #{record.address}
+
+  
+
+    if (record.status)
+      div(class="mb-4")
+        span Trạng thái:
+        if (record.status === "active")
+          span(class="badge badge-success") Hoạt động
+        else
+          span(class="badge badge-danger") Dừng hoạt động
+
+    
+
+    
+
+    a(
+      href=`${prefixAdmin}/accounts/edit/${record.id}`
+      class="btn btn-warning"
+    ) Chỉnh sửa
+
+    script(src="/Admin/Js/products.js")

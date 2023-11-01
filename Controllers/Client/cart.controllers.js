@@ -44,10 +44,8 @@ module.exports.add = async function (req, res) {
     const productId = req.params.productId;
     const quantity = parseInt(req.body.quantity);
     const cartId = req.cookies.cartId;
-
     try {
         const cart = await Cart.findById(cartId);
-
         if (cart) {
             //Check xem product mà khách hàng thêm là vị trí nhiêu không có thì tạo mới một sản phẩn,có rồi lấy cái số lượng cũ
             //cộng cho số lượng mới
@@ -63,16 +61,12 @@ module.exports.add = async function (req, res) {
                 })
             }
         }
-
         await cart.save()
         req.flash("success", "Đã thêm sản phẩm vào giỏ hàng");
     } catch (error) {
         req.flash("error", "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
     }
-
     res.redirect("back")
-
-
 }
 
 //[GET] /cart/delete/:productId
@@ -93,11 +87,6 @@ module.exports.delete = async function (req, res){
 module.exports.update = async function (req, res){
     const cartId = req.cookies.cartId;
     const {productId,quantity} = req.params
-    if(quantity<1){
-        req.flash("error","Vui Lòng Thêm Số Lượng Lớn Hơn 1");
-        res.redirect("back")
-        return
-    }
     await Cart.updateOne({
         _id:cartId,
         "products.product_id":productId

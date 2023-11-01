@@ -1,0 +1,40 @@
+const express = require('express');
+const controller = require("../../Controllers/Admin/blogs.controller");
+const validate = require("../../Validates/Admin/product.validate")
+const router = express.Router();
+const multer = require('multer')
+const storageMulter = require("../../Helpers/storageMulter")
+const uploadCloud = require("../../Middlewares/Admin/uploadCloud.middleware")
+
+// const upload = multer({ storage: storageMulter() })
+const upload = multer()
+
+router.get('/', controller.index);//
+
+router.patch('/change-status/:status/:id', controller.changeStatus);//
+
+router.patch('/change-multi', controller.changeMulti);//
+
+router.delete('/delete/:id', controller.deleteItem);//
+
+router.get('/create', controller.getCreate);//
+
+//Nếu muốn upload ảnh phải cho thêm upload.single thì nó mới gửi dữ liệu lên
+router.post('/create',
+    upload.single('thumbnail'),
+    uploadCloud.uplload,
+    validate.createValidateError,
+    controller.postCreate
+);//
+router.get('/edit/:id', controller.getEdit);//
+
+router.patch('/edit/:id',
+    upload.single('thumbnail'),
+    uploadCloud.uplload,
+    validate.createValidateError,
+    controller.patchEdit,
+
+);//
+
+router.get('/detail/:id', controller.detail);//
+module.exports = router

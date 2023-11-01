@@ -1,14 +1,15 @@
 extends ../../Layout/default.pug
-include ../../Mixin/alert.pug
 include ../../Mixin/image-preview-single.pug
+include ../../Mixin/alert.pug
 include ../../Mixin/select-tree.pug
 block main
-  if(role.permissions.includes("blogs-category_create"))
-    h1(class="mb-4") Thêm mới danh mục bài viết
-    +alert-error(5000)
+  if(role.permissions.includes("blogs_create"))
+    +alert-error(3000)
+    h1(class="mb-4") Thêm mới blogs
 
     form(
-      action=`${prefixAdmin}/blogs-category/create`
+      action=`${prefixAdmin}/blogs/create`
+      id="form-create-product"
       method="POST"
       enctype="multipart/form-data"
     )
@@ -19,35 +20,60 @@ block main
           class="form-control"
           id="title"
           name="title"
-        
-        )
-      
-      div(class="form-group")
-        label(for="parent_id") Danh mục cha
-        select(
-          name="parent_id"
-          id="parent_id"
-          class ="form-control"
-        )
-          option(value="") -- Chọn danh mục cha --
-          if(treeRecord)
-            +select-tree(treeRecord,1)
 
+        )
+      div(class="form-group")
+        label(for="blog_category_id") Danh mục
+        select(
+          name="blog_category_id"
+          id="blog_category_id"
+          class="form-control"
+        )
+          option(value="") -- Chọn danh mục --
+          if(record)
+            +select-tree(record)
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured1"
+          name="featured"
+          value="1"
+        )
+        label(for="featured1" class="form-check-label") Nổi bật
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured0"
+          name="featured"
+          value="0"
+          checked
+        )
+        label(for="featured0" class="form-check-label") Không
       div(class="form-group")
         label(for="desc") Mô tả
         textarea(
           tinymce
-          class="form-control textarea-mce"
+          class="form-control"
           id="desc"
           name="description"
           rows="5"
         )
-      div(
-        class="form-group"
-        upload-image
-      )
+      div(class="form-group")
+        label(for="desc") Nội Dung
+        textarea(
+          tinymce
+          class="form-control"
+          id="content"
+          name="content"
+          rows="5"
+        )
+      
+      div(class="form-group")
         label(for="thumbnail") Ảnh
         +image-preview-single()
+
       div(class="form-group")
         label(for="position") Vị trí
         input(
@@ -82,3 +108,4 @@ block main
           type="submit"
           class="btn btn-primary"
         ) Tạo mới
+    script(src="/Admin/Js/products.js") 

@@ -27,10 +27,10 @@ block main
                 .card-body
                     .row
                         .col-8
-                            if(role.permissions.includes("products-category_edit"))
+                            if(role.permissions.includes("blogs-category_edit"))
                                 +form-change-multi(`${prefixAdmin}/blogs-category/change-multi?_method=PATCH`,actionOptions)
                         .col-4
-                            if(role.permissions.includes("products-category_create"))
+                            if(role.permissions.includes("blogs-category_create"))
                                 a(
                                 href=`${prefixAdmin}/blogs-category/create`
                                 class="btn btn-outline-success"

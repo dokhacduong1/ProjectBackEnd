@@ -1,0 +1,139 @@
+extends ../../Layout/default.pug
+include ../../Mixin/filter-status.pug
+include ../../Mixin/search-item.pug
+include ../../Mixin/pagination.pug
+include ../../Mixin/form-change-multi.pug
+include ../../Mixin/alert.pug
+include ../../Mixin/sort.pug
+include ../../Mixin/moment.pug
+block main
+    if(role.permissions.includes("blogs_view"))
+        +alert-error(3000)
+        +alert-success(1000)
+        h1 Trang Blogs
+        .card.mb-3
+            .card-header Bộ lọc và Tìm kiếm
+            .card-body
+                .row
+                    .col-6
+                        +filter-status(filterStatus)
+                    .col-6
+                        +search-item("Tìm Kiếm")
+        .card.mb-3
+            .card-header Sắp Xếp
+            .card-body
+                .row
+                    .col-4
+                        +sort(sortOptions)
+        .card.mb-3
+            .card-header Danh Sách Sản Phẩm
+                .card-body
+                    .row
+                        .col-8
+                            if(role.permissions.includes("blogs_edit"))
+                                +form-change-multi(`${prefixAdmin}/blogs/change-multi?_method=PATCH`,actionOptions)
+                        .col-4
+                            if(role.permissions.includes("blogs_create"))
+                                a(
+                                href=`${prefixAdmin}/blogs/create`
+                                class="btn btn-outline-success"
+                                ) +Thêm Mới
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                            )
+                            thead
+                                tr
+                                    th
+                                        input(type="checkbox" name="checkall")
+                                    th STT
+                                    th Hình ảnh
+                                    th Tiêu đề
+                                  
+                                    th Vị Trí
+                                    th Trạng thái
+                                    th Người Tạo
+                                    th Người Cập Nhật
+                                    th Hành động
+                            tbody
+                                each item,index in blogs
+                                    tr 
+                                        td
+                                            input(
+                                                type="checkbox"
+                                                name="id"
+                                                value=item.id
+                                            )
+                                        td #{objectPagination.limitItem*objectPagination.currentPage+index-(objectPagination.limitItem-1)}
+                                        td
+                                            img(
+                                                src=item.thumbnail
+                                                alt=item.title
+                                                width="100px"
+                                                height="auto"
+                                            )
+                                        td #{item.title} 
+                                            if(item.featured == "1")
+                                                img(src="/Admin/Images/sao.gif" class="hinh-ngoi-sao")
+                                       
+                                        td
+                                            input(
+                                                type="number"
+                                                value=item.position
+                                                style="width:60px"
+                                                name="position"
+                                            )
+                                        td
+                                            if(role.permissions.includes("blogs_edit"))
+                                                if(item.status == "active")
+                                                    a(
+                                                    href="javascript:;"
+                                                    button-change-status = item.status
+                                                    data-id = item.id
+                                                    class="badge badge-success"
+                                                    ) Hoạt động
+                                                else
+                                                    a(
+                                                    href="javascript:;"  
+                                                    button-change-status = item.status
+                                                    data-id = item.id
+                                                    class="badge badge-danger"
+                                                    ) Dừng hoạt động 
+                                        td 
+                                            p #{item.accountFullName}
+                                            if(item.createdBy.account_id)
+                                                +formatDate(item.createdBy.createdAt)
+                                        td
+                                            - const updatedBy = item.updatedBy.slice(-1)[0];
+                                            if(updatedBy)
+                                                p #{updatedBy.accountFullName}
+                                                p
+                                                    +formatDateTime(updatedBy.updatedAt)
+                                        td
+                                            a(
+                                                href =`${prefixAdmin}/blogs/detail/${item.id}`
+                                                class="btn btn-secondary btn-sm"
+                                            ) Chi Tiết
+                                            if(role.permissions.includes("blogs_edit"))
+                                                a(
+                                                    href =`${prefixAdmin}/blogs/edit/${item.id}`
+                                                    class="btn btn-warning btn-sm"
+                                                ) Sửa
+                                            if(role.permissions.includes("blogs_delete"))
+                                                button(
+                                                    class="btn btn-danger btn-sm ml-1"
+                                                    data-id =item.id
+                                                    button-delete
+                                                    ) Xóa
+        +pagination(objectPagination,3)
+        form(
+            method="POST"
+            id = "form-change-status"
+            data-path=`${prefixAdmin}/blogs/change-status`
+            )
+        form(
+            method="POST"
+            id = "form-delete-status"
+            data-path=`${prefixAdmin}/blogs/delete`
+            ) 
+        script(src="/Admin/Components/changeStatus.js") 
