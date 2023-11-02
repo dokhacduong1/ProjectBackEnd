@@ -2,7 +2,7 @@ const crypto = require('crypto')
 
 module.exports.generateRandomString = (length) => {
   const seed = new Date().getTime();
-  console.log(seed)
+
   const conver = Math.random(seed);
   const token = crypto.randomBytes(length).toString('hex')+conver;
   return token;

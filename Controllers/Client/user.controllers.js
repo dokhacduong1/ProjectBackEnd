@@ -139,7 +139,7 @@ module.exports.postForgotPassword = async function (req, res) {
     //set up time để tự mất
     const expireAtOk = new Date();
     expireAtOk.setMinutes(expireAtOk.getMinutes() + 4);
-    console.log(expireAtOk)
+   
     const objectForgotPassword = {
       email: email,
       otp: generateHelper.generateRandomNumber(6),
@@ -149,7 +149,7 @@ module.exports.postForgotPassword = async function (req, res) {
     
     await record.save();
     const expireAt = new Date(record.expireAt);
-    console.log(expireAt)
+   
     //Nếu tồn tại email thì gửi về email
     const otp = record.otp;
     const subject = "Mã OTP xác minh lấy lại mật khẩu";
@@ -214,8 +214,7 @@ module.exports.postOtp = async function (req, res) {
     email: email,
     deleted: false
   });
-  console.log(user)
-  console.log(email)
+
   res.cookie("tokenUser", user.tokenUser);
   
   res.redirect("/user/password/reset");
@@ -263,7 +262,7 @@ module.exports.postInfo = async function (req, res){
     res.redirect("back");
     return
   }
-  console.log(req.body)
+
   await User.updateOne({
     tokenUser: tokenUser
   }, req.body);

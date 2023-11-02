@@ -116,7 +116,7 @@ module.exports.changeStatus = async function (req, res) {
 
 //[PATCH] /admin/users/change-multi
 module.exports.changeMulti = async function (req, res) {
-    console.log("ok")
+   
     const permission = res.locals.role.permissions
     if(!permission.includes("account-client_edit")){
         return res.json({err:"Bạn Không Có QUyền"});
